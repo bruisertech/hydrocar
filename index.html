@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Propuesta Comercial Premium - Hydrocar</title>
-    <!-- Tailwind CSS -->
+    <!-- import de tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,8 +14,8 @@
                         brand: {
                             dark: '#0a0a0a',
                             darker: '#050505',
-                            accent: '#2563eb', // blue-600
-                            cyan: '#2dd4bf', // teal-400 / cyan-400
+                            accent: '#2563eb', // asul 600 pa q combine
+                            cyan: '#2dd4bf', // no c q color s este pero qeda chido
                             gemini1: '#4285f4',
                             gemini2: '#9b72cb',
                             gemini3: '#d96570',
@@ -56,7 +56,7 @@
             }
         }
     </script>
-    <!-- Lucide Icons -->
+    <!-- iconos de lucide xd -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
@@ -150,7 +150,7 @@
 </head>
 <body class="antialiased overflow-x-hidden relative">
 
-    <!-- WebView Warning Overlay -->
+    <!-- alerta pa los q abren en watsap weyyy -->
     <div id="webview-warning" class="fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl flex-col items-center justify-center p-6 text-center hidden">
         <div class="glass-card p-8 rounded-3xl max-w-md w-full border border-brand-cyan/30 shadow-[0_0_50px_rgba(45,212,191,0.2)] animate-fade-in-up">
             <div class="w-16 h-16 mx-auto bg-brand-cyan/10 rounded-full flex items-center justify-center mb-6">
@@ -161,7 +161,7 @@
                 Estás viendo esta propuesta desde el navegador integrado. Para ver todas las animaciones y funcionalidades correctamente, por favor abre este enlace en tu navegador principal.
             </p>
             
-            <!-- iOS Instructions for Local Files -->
+            <!-- intruciones d ios x si lo abren local -->
             <div id="ios-instruction-box" class="hidden w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-left space-y-4 animate-fade-in-up">
                 <p class="font-bold text-white text-base text-center mb-2">Pasos para ver en iPhone:</p>
                 
@@ -181,7 +181,7 @@
                 </div>
             </div>
 
-            <!-- Android Instructions for Local Files -->
+            <!-- lo mismo pero pa android xd -->
             <div id="android-instruction-box" class="hidden w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-left space-y-4 animate-fade-in-up">
                 <p class="font-bold text-white text-base text-center mb-2">Pasos para ver en Android:</p>
                 
@@ -196,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- Web Link Fallback Buttons -->
+            <!-- botones x si si sta online -->
             <div id="web-buttons" class="hidden space-y-4 w-full mt-4">
                 <button id="btn-open-safari" class="hidden w-full py-4 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors shadow-lg">
                     <i data-lucide="compass" class="w-5 h-5 text-blue-500"></i>
@@ -221,7 +221,7 @@
     </div>
 
 
-    <!-- Navigation (Simple) -->
+    <!-- nav var -->
     <nav class="fixed w-full z-50 glass-card border-b-0 border-white/5 py-4">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center gap-2">
@@ -235,7 +235,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Seccion principal (Hero) -->
     <section class="relative min-h-screen flex items-center justify-center pt-20">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
@@ -269,7 +269,7 @@
         </div>
     </section>
 
-    <!-- Strategic Analysis Section -->
+    <!-- seccion de la estrategia -->
     <section id="estrategia" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
@@ -317,9 +317,9 @@
 
     
     
-    <!-- Cronograma & Suscripción (Visual System) -->
+    <!-- cronograma chido -->
     <section id="suscripciones" class="py-24 relative bg-brand-dark overflow-hidden">
-        <!-- Background Glow -->
+        <!-- brillito del fondo -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-brand-gemini1/10 blur-[120px] rounded-full pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
@@ -332,11 +332,11 @@
                 <p class="text-slate-400 max-w-2xl mx-auto">Transformando lavados ocasionales en suscripciones automáticas. Un ecosistema predictivo y recurrente.</p>
             </div>
 
-            <!-- Horizontal Timeline (Adapted to Dark Theme) -->
+            <!-- timeline scrolleable en cel -->
             <div class="glass-card p-8 rounded-3xl border-white/5 overflow-x-auto custom-scrollbar relative">
                 <h3 class="text-xs font-bold uppercase text-slate-500 mb-8 tracking-widest">Cronograma de Implementación</h3>
                 <div class="flex justify-between min-w-[800px] relative pb-4">
-                    <!-- Base Line -->
+                    <!-- linea de base xd -->
                     <div class="absolute top-4 left-0 w-full h-[2px] bg-white/10 -z-10"></div>
                     
                     <div class="flex flex-col items-center text-center w-32 relative group">
@@ -373,10 +373,10 @@
                 </div>
             </div>
 
-            <!-- Subscription Visualization -->
+            <!-- vista de la suscrpcion -->
             <div class="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
                 
-                <!-- Info text -->
+                <!-- textitos -->
                 <div class="space-y-6 animate-slide-in-right">
                     <h4 class="text-2xl md:text-3xl font-bold">Visualización del Ecosistema</h4>
                     <p class="text-slate-400 leading-relaxed">
@@ -393,9 +393,9 @@
                     </div>
                 </div>
 
-                <!-- Simulation Card -->
+                <!-- targeta de simulacion wey -->
                 <div class="glass-card p-6 md:p-8 rounded-[2rem] border-white/10 relative overflow-hidden group shadow-2xl">
-                    <!-- Glow effect -->
+                    <!-- resplandor we -->
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-gemini1/20 rounded-full blur-[50px] group-hover:bg-brand-gemini1/30 transition-colors duration-500"></div>
                     
                     <h4 class="text-[10px] font-bold uppercase text-slate-500 tracking-widest mb-6 relative z-10">Vista Cliente: Estado de suscripción</h4>
@@ -411,12 +411,12 @@
                         </div>
                     </div>
                     
-                    <!-- Progress Bar -->
+                    <!-- barra d progeso -->
                     <div class="w-full bg-white/5 h-2 rounded-full mb-8 relative z-10 overflow-hidden">
                         <div class="bg-gradient-to-r from-brand-cyan to-brand-gemini1 h-full rounded-full w-1/4 shadow-[0_0_10px_rgba(45,212,191,0.5)]"></div>
                     </div>
 
-                    <!-- Payment Method Card -->
+                    <!-- card de pago -->
                     <div class="p-4 bg-black/40 rounded-2xl border border-white/5 mb-6 relative z-10 backdrop-blur-sm">
                         <div class="flex items-center justify-between text-xs mb-3 text-slate-400">
                             <span>Próximo cobro automático:</span>
@@ -424,7 +424,7 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <!-- Clean Visa SVG -->
+                                <!-- logito de visa -->
                                 <div class="bg-white px-2 py-1 rounded w-12 h-8 flex items-center justify-center overflow-hidden">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Visa_Inc._logo_%282021–present%29.svg/1280px-Visa_Inc._logo_%282021–present%29.svg.png?_=20240313022811" alt="Visa" class="w-full h-auto object-contain">
                                 </div>
@@ -440,10 +440,18 @@
                     </button>
                 </div>
             </div>
+
+            <div class="mt-16 max-w-3xl mx-auto glass-card p-6 rounded-2xl border-white/5 text-center flex flex-col items-center justify-center animate-fade-in-up">
+                <i data-lucide="info" class="w-6 h-6 text-brand-cyan mb-3 opacity-80"></i>
+                <p class="text-slate-300 text-sm md:text-base font-medium">Condiciones de Desarrollo</p>
+                <p class="text-slate-400 text-xs mt-2">
+                    El proyecto se inicia con un anticipo del <strong>50%</strong>. El tiempo estimado de desarrollo es de <strong>2 semanas</strong>, seguido de <strong>1 semana</strong> dedicada a revisión y ajustes finales junto al cliente.
+                </p>
+            </div>
         </div>
     </section>
 
-    <!-- Investment Plans Section -->
+    <!-- los planes de precio we -->
     <section id="planes" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center space-y-4 mb-16">
@@ -454,7 +462,7 @@
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 
-                <!-- Plan Básico -->
+                <!-- plan basico -->
                 <div class="glass-card p-8 rounded-3xl border-white/5 flex flex-col hover:-translate-y-2 transition-transform duration-300">
                     <h4 class="text-xl font-bold text-white mb-2">Presencia Digital</h4>
                     <p class="text-slate-400 text-sm mb-6 h-10">Para establecer una imagen premium y captar prospectos.</p>
@@ -471,7 +479,7 @@
                     <a href="https://wa.me/573053862774?text=Hola,%20elegí%20el%20plan%20Presencia%20Digital%20de%20$300.000.%20Iniciamos%20el%20desarrollo." target="_blank" class="w-full py-3 rounded-xl border border-white/10 hover:bg-white/5 transition-colors font-medium text-center inline-block">Seleccionar Plan</a>
                 </div>
 
-                <!-- Plan Profesional -->
+                <!-- plan pro -->
                 <div class="glass-card p-8 rounded-3xl border-brand-cyan/30 relative flex flex-col transform md:-translate-y-4 shadow-[0_0_30px_rgba(45,212,191,0.15)]">
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-cyan text-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recomendado</div>
                     <h4 class="text-xl font-bold text-white mb-2">Ecosistema Fidelidad</h4>
@@ -490,7 +498,7 @@
                     <a href="https://wa.me/573053862774?text=Hola,%20elegí%20el%20plan%20Ecosistema%20Fidelidad%20de%20$950.000.%20Iniciamos%20el%20desarrollo." target="_blank" class="w-full py-3 rounded-xl bg-brand-cyan text-brand-dark hover:bg-teal-300 transition-colors font-bold text-center inline-block">Seleccionar Plan</a>
                 </div>
 
-                <!-- Plan Premium -->
+                <!-- plan prmium el mas caro xd -->
                 <div class="glass-card p-8 rounded-3xl border-brand-gemini1/30 relative flex flex-col hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
                     <div class="absolute inset-0 bg-brand-gemini1/5 -z-10 pointer-events-none"></div>
                     <h4 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-brand-gemini1"></i> Ecosistema Premium</h4>
@@ -511,24 +519,17 @@
 
             </div>
 
-            <div class="mt-16 max-w-3xl mx-auto glass-card p-6 rounded-2xl border-white/5 text-center flex flex-col items-center justify-center animate-fade-in-up">
-                <i data-lucide="info" class="w-6 h-6 text-brand-cyan mb-3 opacity-80"></i>
-                <p class="text-slate-300 text-sm md:text-base font-medium">Condiciones de Desarrollo</p>
-                <p class="text-slate-400 text-xs mt-2">
-                    El proyecto se inicia con un anticipo del <strong>50%</strong>. El tiempo estimado de desarrollo es de <strong>2 semanas</strong>, seguido de <strong>1 semana</strong> dedicada a revisión y ajustes finales junto al cliente.
-                </p>
-            </div>
         </div>
     </section>
 
-    <!-- Visual Divider -->
+    <!-- espacio pa q respire -->
     <div class="h-64 relative overflow-hidden">
         <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2166&auto=format&fit=crop" alt="Interiores impecables" class="w-full h-full object-cover opacity-30 fixed-bg hidden md:block" style="background-attachment: fixed;">
         <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2166&auto=format&fit=crop" alt="Interiores impecables" class="w-full h-full object-cover opacity-30 md:hidden">
         <div class="absolute inset-0 bg-gradient-to-b from-brand-darker via-transparent to-brand-dark"></div>
     </div>
 
-    <!-- Signature Section -->
+    <!-- el footer mio -->
     <footer class="py-16 border-t border-white/5 relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
             <div class="w-16 h-16 mx-auto mb-6 rounded-2xl glass-card flex items-center justify-center border-brand-cyan/20">
@@ -558,12 +559,12 @@
         </div>
     </footer>
 
-    <!-- MAGIC MIRROR (GEMINI STYLE AI CHAT) -->
+    <!-- ********* CHATBOT DE IA ********* -->
     <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
         
-        <!-- Chat Window (Hidden by default) -->
+        <!-- ventana del chat (oculta x defecto pa q no estorbe) -->
         <div id="ai-chat-window" class="hidden w-[350px] sm:w-[400px] mb-4 glass-card gemini-border rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 flex flex-col h-[500px]">
-            <!-- Header -->
+            <!-- cabezera del chat -->
             <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5 shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-6 h-6 rounded-full gemini-gradient flex items-center justify-center">
@@ -576,14 +577,14 @@
                 </button>
             </div>
             
-            <!-- Chat Body -->
+            <!-- dond van los msjs -->
             <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-4 text-sm scroll-smooth" id="chat-messages">
-                <!-- Messages will be injected here via JS -->
+                <!-- el js va a meter los msjs aqi -->
             </div>
             
-            <!-- Input Area -->
+            <!-- dond escribe el usuario -->
             <div class="p-3 border-t border-white/10 bg-black/40 shrink-0">
-                <!-- Quick Replies -->
+                <!-- botones rapidos -->
                 <div class="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide" id="quick-replies">
                     <button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-brand-gemini1/30 bg-brand-gemini1/10 hover:bg-brand-gemini1/20 text-xs text-brand-gemini1 transition-colors" onclick="sendUserMessage('¿Cuál es la lógica técnica de las suscripciones?')">ROI Suscripciones</button>
                     <button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition-colors" onclick="sendUserMessage('¿Cómo funciona la estrategia de retención?')">Retención</button>
@@ -603,27 +604,27 @@
             </div>
         </div>
 
-        <!-- Floating Action Button -->
+        <!-- boton flotantewe -->
         <button id="ai-fab" class="w-14 h-14 rounded-full gemini-gradient shadow-[0_0_20px_rgba(155,114,203,0.4)] flex items-center justify-center hover:scale-105 transition-transform relative group">
             <div class="absolute inset-0 rounded-full gemini-gradient animate-pulse-glow blur-sm -z-10"></div>
             <i data-lucide="sparkles" class="w-6 h-6 text-white drop-shadow-md"></i>
             
-            <!-- Tooltip -->
+            <!-- letrerito q sale al pasar el mause -->
             <div class="absolute right-16 px-3 py-1.5 glass-card rounded-lg text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
                 Hablar con IA
             </div>
         </button>
     </div>
 
-    <!-- Scripts -->
+    <!-- aqi empiesa lo chido el script js -->
     <script>
-        // Initialize Lucide Icons
+        // iniciamos los iconos compa
         lucide.createIcons();
 
-        // Safe WebView & Chat Initialization
+        // inicializar todo de golpe pa q no explote
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- 1. WEBVIEW DETECTION LOGIC ---
+            // funcion pa ver si stan en whatsapp we
             const isWebView = () => {
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
                 const isIosWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent);
@@ -634,6 +635,7 @@
                 return isIosWebView || isAndroidWebView || isWhatsApp || isInstagram || isFB;
             };
 
+             // const pa saver el OS vdd
             const detectOS = () => {
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
                 if (/android/i.test(userAgent)) return 'Android';
@@ -686,7 +688,7 @@
             
             checkEnvironment();
 
-            // Expose copy link globally for the button
+            // acemos global la funcion de copiar weee
             window.copyProposalLink = () => {
                 const currentUrl = window.location.href;
                 navigator.clipboard.writeText(currentUrl).then(() => {
@@ -699,7 +701,7 @@
             };
 
 
-            // --- 2. EVOLVED AI CHAT LOGIC ---
+            // LA IA EMPIEZA AQII
             const fab = document.getElementById('ai-fab');
             const chatWindow = document.getElementById('ai-chat-window');
             const closeBtn = document.getElementById('close-chat');
@@ -722,7 +724,7 @@
                         simulateInitialMessage();
                         hasOpenedOnce = true;
                     } else {
-                        // Focus input if opened again
+                        // para q se abra el teclado d cel directto
                         setTimeout(() => chatInput.focus(), 300);
                     }
                 } else {
@@ -735,7 +737,7 @@
 
             const addMessage = (text, isAI = true) => {
                 const msgDiv = document.createElement('div');
-                // Added a gentle pop-in animation
+                // animacion perrona
                 msgDiv.className = `max-w-[85%] rounded-2xl p-3 animate-fade-in-up ${isAI ? 'bg-white/10 text-slate-200 self-start rounded-tl-sm' : 'bg-brand-accent/80 text-white self-end rounded-tr-sm border border-white/5'}`;
                 
                 if(isAI) {
@@ -753,7 +755,7 @@
                 lucide.createIcons({ root: msgDiv });
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 
-                // Optional: simple haptic feedback simulation if browser supports it
+                // q vibre el cel we
                 if (navigator.vibrate) {
                     navigator.vibrate(isAI ? [10, 30, 10] : 10);
                 }
@@ -779,7 +781,7 @@
                 if (el) el.remove();
             };
 
-            // Enhanced AI dictionary
+            // el cerebro de la ia (las respuestas wey)
             const aiResponses = {
                 "suscripciones": "El modelo de suscripciones permite cobrar de forma automática a la tarjeta del cliente mes a mes. Esto te garantiza ingresos recurrentes y predictibilidad, reduciendo la dependencia del 'lavado ocasional'. ¿Quieres ver la simulación de cobro?",
                 "roi": "El Retorno de Inversión (ROI) es alto porque retienes clientes. Si logras 50 suscripciones de $75.000, tienes $3.750.000 COP fijos al mes solo en retención automática, cubriendo los gastos operativos.",
@@ -796,22 +798,23 @@
             window.sendUserMessage = (text) => {
                 if (!text.trim()) return;
                 
-                // Add user message to UI
+                // ponemos el mensage en el html
                 addMessage(text, false);
                 chatInput.value = '';
                 chatInput.focus();
 
-                // Thinking delay based on text length to simulate realism
+                // lo asmoes pensar un rato pa q c vea real compa
                 const thinkTime = 600 + Math.random() * 600 + (text.length * 10);
                 const thinkingId = addThinkingIndicator();
                 
                 setTimeout(() => {
                     removeThinkingIndicator(thinkingId);
                     
+                    // por default si no save pos dise esto
                     let response = aiResponses["default"];
                     const lowerText = text.toLowerCase();
                     
-                    // Logic matching
+                    // pos el if else de toda la vida ajjaj
                     if (lowerText.includes("suscrip") || lowerText.includes("pagos")) {
                         response = aiResponses["suscripciones"];
                     } else if (lowerText.includes("roi") || lowerText.includes("retorno") || lowerText.includes("ganancia")) {
@@ -832,7 +835,7 @@
                         response = aiResponses["hola"];
                     }
                     
-                    // Parse markdown-style bold
+                    // pa que las negritas de mkdown jalen q no jalaban ants jaja
                     response = response.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>');
                     
                     addMessage(response, true);
@@ -840,7 +843,7 @@
                 }, thinkTime);
             };
 
-            // Bind events
+            // liseners we
             window.handleKeyPress = (e) => {
                 if (e.key === 'Enter') {
                     window.sendUserMessage(e.target.value);
