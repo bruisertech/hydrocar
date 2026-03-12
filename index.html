@@ -517,7 +517,8 @@
                 <p class="text-slate-400 text-xs mt-2">
                     El proyecto se inicia con un anticipo del <strong>50%</strong>. El tiempo estimado de desarrollo es de <strong>2 semanas</strong>, seguido de <strong>1 semana</strong> dedicada a revisión y ajustes finales junto al cliente.
                 </p>
-            </div>        </div>
+            </div>
+        </div>
     </section>
 
     <!-- Visual Divider -->
@@ -619,59 +620,91 @@
         // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Magic Mirror AI Chat Logic
+        // Safe WebView & Chat Initialization
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. WEBVIEW DETECTION LOGIC ---
+            const isWebView = () => {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                const isIosWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent);
+                const isAndroidWebView = /Android.*(; wv|Version\/[0-9]\.[0-9]).*Chrome/i.test(userAgent);
+                const isWhatsApp = /WhatsApp/i.test(userAgent);
+                const isInstagram = /Instagram/i.test(userAgent);
+                const isFB = /FBAN|FBAV/i.test(userAgent);
+                return isIosWebView || isAndroidWebView || isWhatsApp || isInstagram || isFB;
+            };
 
-            const isLocalFile = window.location.protocol === 'file:';
-            const isWhatsAppOrSimilar = isWebView();
-            const os = detectOS();
+            const detectOS = () => {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) return 'Android';
+                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'iOS';
+                return 'unknown';
+            };
 
-            // We show the warning if they are in a WebView OR if they opened a local file on a mobile device and it's rendering poorly.
-            // Since it's hard to detect "poor rendering", we will assume if it's iOS and a local file inside a messenger, they need help.
-            if (isWhatsAppOrSimilar || (isLocalFile && (os === 'iOS' || os === 'Android'))) {
-                const warningEl = document.getElementById('webview-warning');
-                const currentUrl = window.location.href;
-                
-                if (warningEl) {
-                    warningEl.style.display = 'flex';
+            const checkEnvironment = () => {
+                const isLocalFile = window.location.protocol === 'file:';
+                const isWhatsAppOrSimilar = isWebView();
+                const os = detectOS();
+
+                if (isWhatsAppOrSimilar || (isLocalFile && (os === 'iOS' || os === 'Android'))) {
+                    const warningEl = document.getElementById('webview-warning');
+                    const currentUrl = window.location.href;
                     
-                    // If it's a local file (e.g. sent directly over WhatsApp as a document)
-                    if (isLocalFile) {
-                        document.getElementById('webview-instruction').textContent = "Has abierto un archivo local dentro de la app. Para que funcionen los botones y animaciones, guárdalo en tu teléfono.";
-                        if (os === 'iOS') {
-                            document.getElementById('ios-instruction-box').classList.remove('hidden');
-                        } else {
-                            document.getElementById('android-instruction-box').classList.remove('hidden');
-                        }
-                    } else {
-                        // It's a web URL viewed inside an in-app browser
-                        const webBtns = document.getElementById('web-buttons');
-                        webBtns.classList.remove('hidden');
+                    if (warningEl) {
+                        warningEl.style.display = 'flex';
                         
-                        if (os === 'iOS') {
-                            const safariBtn = document.getElementById('btn-open-safari');
-                            safariBtn.classList.remove('hidden');
-                            safariBtn.addEventListener('click', () => {
-                                window.location.href = `x-web-search://?${currentUrl}`;
-                                setTimeout(() => { window.location.href = currentUrl; }, 1000);
-                            });
-                        } else if (os === 'Android') {
-                            const chromeBtn = document.getElementById('btn-open-chrome');
-                            chromeBtn.classList.remove('hidden');
-                            chromeBtn.addEventListener('click', () => {
-                                const httpsLessUrl = currentUrl.replace(/^https?:\/\//i, '');
-                                window.location.href = `intent://${httpsLessUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-                            });
+                        if (isLocalFile) {
+                            document.getElementById('webview-instruction').textContent = "Has abierto un archivo local dentro de la app. Para que funcionen los botones y animaciones, guárdalo en tu teléfono.";
+                            if (os === 'iOS') {
+                                document.getElementById('ios-instruction-box').classList.remove('hidden');
+                            } else {
+                                document.getElementById('android-instruction-box').classList.remove('hidden');
+                            }
+                        } else {
+                            const webBtns = document.getElementById('web-buttons');
+                            webBtns.classList.remove('hidden');
+                            
+                            if (os === 'iOS') {
+                                const safariBtn = document.getElementById('btn-open-safari');
+                                safariBtn.classList.remove('hidden');
+                                safariBtn.addEventListener('click', () => {
+                                    window.location.href = `x-web-search://?${currentUrl}`;
+                                    setTimeout(() => { window.location.href = currentUrl; }, 1000);
+                                });
+                            } else if (os === 'Android') {
+                                const chromeBtn = document.getElementById('btn-open-chrome');
+                                chromeBtn.classList.remove('hidden');
+                                chromeBtn.addEventListener('click', () => {
+                                    const httpsLessUrl = currentUrl.replace(/^https?:\/\//i, '');
+                                    window.location.href = `intent://${httpsLessUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+                                });
+                            }
                         }
                     }
                 }
-            }
+            };
+            
+            checkEnvironment();
+
+            // Expose copy link globally for the button
+            window.copyProposalLink = () => {
+                const currentUrl = window.location.href;
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const msg = document.getElementById('copy-success');
+                    msg.classList.remove('hidden');
+                    setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            };
 
 
+            // --- 2. EVOLVED AI CHAT LOGIC ---
             const fab = document.getElementById('ai-fab');
             const chatWindow = document.getElementById('ai-chat-window');
             const closeBtn = document.getElementById('close-chat');
             const messagesContainer = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
             
             let isChatOpen = false;
             let hasOpenedOnce = false;
@@ -681,7 +714,6 @@
                 
                 if (isChatOpen) {
                     chatWindow.classList.remove('hidden');
-                    // Small delay to allow display:block to apply before animating opacity/transform
                     setTimeout(() => {
                         chatWindow.classList.remove('translate-y-4', 'opacity-0');
                     }, 10);
@@ -689,24 +721,28 @@
                     if (!hasOpenedOnce) {
                         simulateInitialMessage();
                         hasOpenedOnce = true;
+                    } else {
+                        // Focus input if opened again
+                        setTimeout(() => chatInput.focus(), 300);
                     }
                 } else {
                     chatWindow.classList.add('translate-y-4', 'opacity-0');
                     setTimeout(() => {
                         chatWindow.classList.add('hidden');
-                    }, 300); // Wait for transition to finish
+                    }, 300); 
                 }
             };
 
             const addMessage = (text, isAI = true) => {
                 const msgDiv = document.createElement('div');
-                msgDiv.className = `max-w-[85%] rounded-2xl p-3 ${isAI ? 'bg-white/10 text-slate-200 self-start rounded-tl-sm' : 'bg-brand-accent/80 text-white self-end rounded-tr-sm'}`;
+                // Added a gentle pop-in animation
+                msgDiv.className = `max-w-[85%] rounded-2xl p-3 animate-fade-in-up ${isAI ? 'bg-white/10 text-slate-200 self-start rounded-tl-sm' : 'bg-brand-accent/80 text-white self-end rounded-tr-sm border border-white/5'}`;
                 
                 if(isAI) {
                     msgDiv.innerHTML = `
                         <div class="flex gap-2 items-start">
                             <i data-lucide="sparkles" class="w-4 h-4 text-brand-cyan shrink-0 mt-0.5"></i>
-                            <span>${text}</span>
+                            <span class="leading-relaxed text-[13px]">${text}</span>
                         </div>
                     `;
                 } else {
@@ -716,17 +752,22 @@
                 messagesContainer.appendChild(msgDiv);
                 lucide.createIcons({ root: msgDiv });
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Optional: simple haptic feedback simulation if browser supports it
+                if (navigator.vibrate) {
+                    navigator.vibrate(isAI ? [10, 30, 10] : 10);
+                }
             };
 
             const addThinkingIndicator = () => {
                 const id = 'thinking-' + Date.now();
                 const div = document.createElement('div');
                 div.id = id;
-                div.className = 'bg-white/5 self-start rounded-2xl rounded-tl-sm p-3 flex gap-1 items-center w-16';
+                div.className = 'bg-white/5 self-start rounded-2xl rounded-tl-sm p-3 flex gap-1.5 items-center w-16 animate-fade-in-up';
                 div.innerHTML = `
-                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 0ms"></div>
-                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 150ms"></div>
-                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 300ms"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 0ms"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 150ms"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 300ms"></div>
                 `;
                 messagesContainer.appendChild(div);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -738,27 +779,30 @@
                 if (el) el.remove();
             };
 
+            // Enhanced AI dictionary
             const aiResponses = {
-                "suscripciones": "El backend de suscripciones operará bajo un modelo de fijación de ingresos recurrentes. Técnicamente, esto reduce el CAC (Costo de Adquisición) en un 40%, ya que el sistema retiene al cliente mediante el débito automático. La base de datos registrará cada lavado permitiendo predicciones de stock de insumos con alta precisión.",
-                "premium": "El Plan Ecosistema Premium ($1.800.000 COP) es la joya de la corona. Incluye diseño UX/UI High-Tech, sistema automatizado de suscripciones, integración de pasarela segura, módulo avanzado de citas y asesoría estratégica de Bruiser Tech. ¿Te gustaría agendar una llamada con Daniel para revisarlo?",
-                "desarrollador": "Esta propuesta fue creada por Daniel Contreras Herrera, CEO de Bruiser Tech, especializado en arquitecturas digitales de alto nivel. Puedes contactarlo en WhatsApp al +57 305 386 2774 o en Instagram @bruiser.tech.",
-                "seo": "El sistema integrará un ecosistema de retención inteligente. Al vincular el perfil del cliente, podemos disparar notificaciones push o SMS automatizados cuando detectemos que han pasado más de 15 días desde su último detallado, optimizando el flujo de entrada al lavadero.",
-                "default": "He analizado la arquitectura de Hydrocar. Puedo responderte sobre el **sistema de suscripciones**, la **estrategia de retención (SEO/Notificaciones)**, los **planes de inversión** o sobre el **desarrollador de la propuesta**. ¿Qué componente deseas que analicemos?"
+                "suscripciones": "El modelo de suscripciones permite cobrar de forma automática a la tarjeta del cliente mes a mes. Esto te garantiza ingresos recurrentes y predictibilidad, reduciendo la dependencia del 'lavado ocasional'. ¿Quieres ver la simulación de cobro?",
+                "roi": "El Retorno de Inversión (ROI) es alto porque retienes clientes. Si logras 50 suscripciones de $75.000, tienes $3.750.000 COP fijos al mes solo en retención automática, cubriendo los gastos operativos.",
+                "premium": "El Plan Ecosistema Premium ($1.800.000 COP) incluye todo: Diseño UI/UX High-Tech, integración de pasarela de pagos para suscripciones, desarrollo de WebApp y base de datos. Es la arquitectura perfecta para dominar Cali.",
+                "desarrollador": "La propuesta técnica fue desarrollada por **Daniel Contreras Herrera**, CEO de Bruiser Tech. Tiene más de 8 años de experiencia creando arquitecturas digitales escalables. Puedes hablarle al +57 305 386 2774.",
+                "daniel": "Daniel es un experto en desarrollo Full-Stack. Ha estructurado esta propuesta específicamente para las necesidades de Hydrocar.",
+                "seo": "El ecosistema incluirá estrategias SEO y notificaciones. Si un cliente no ha venido en 15 días, el sistema puede alertarle para que agende, manteniendo su carro impecable.",
+                "webapp": "Una WebApp es una aplicación web progresiva. Se comporta como una app nativa en el celular del cliente, pero no necesita descargarse de la App Store. Es más rápida, no ocupa espacio y es perfecta para el módulo de suscripciones.",
+                "tiempo": "El desarrollo toma aproximadamente **2 semanas** de ingeniería y diseño, seguido de **1 semana** de revisiones para asegurar que la plataforma de Hydrocar quede perfecta.",
+                "hola": "¡Hola de nuevo! Soy el asistente IA de esta propuesta. Estoy aquí para resolver tus dudas sobre tecnología, planes o integraciones. ¿En qué te ayudo?",
+                "default": "He analizado la arquitectura de Hydrocar. Puedo responderte sobre el **sistema de suscripciones**, el **ROI**, la tecnología **WebApp**, los **planes de inversión** o sobre el **desarrollador**. ¿Qué analizamos hoy?"
             };
 
             window.sendUserMessage = (text) => {
                 if (!text.trim()) return;
                 
-                // Add User message
-                const msgDiv = document.createElement('div');
-                msgDiv.className = 'max-w-[85%] rounded-2xl p-3 bg-white/10 text-slate-200 self-end rounded-tr-sm border border-white/5';
-                msgDiv.textContent = text;
-                messagesContainer.appendChild(msgDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
-                document.getElementById('chat-input').value = '';
+                // Add user message to UI
+                addMessage(text, false);
+                chatInput.value = '';
+                chatInput.focus();
 
-                // Simulate thinking
+                // Thinking delay based on text length to simulate realism
+                const thinkTime = 600 + Math.random() * 600 + (text.length * 10);
                 const thinkingId = addThinkingIndicator();
                 
                 setTimeout(() => {
@@ -767,24 +811,36 @@
                     let response = aiResponses["default"];
                     const lowerText = text.toLowerCase();
                     
-                    if (lowerText.includes("suscrip") || lowerText.includes("pagos") || lowerText.includes("roi")) {
+                    // Logic matching
+                    if (lowerText.includes("suscrip") || lowerText.includes("pagos")) {
                         response = aiResponses["suscripciones"];
-                    } else if (lowerText.includes("premium") || lowerText.includes("plan")) {
+                    } else if (lowerText.includes("roi") || lowerText.includes("retorno") || lowerText.includes("ganancia")) {
+                        response = aiResponses["roi"];
+                    } else if (lowerText.includes("premium") || lowerText.includes("plan") || lowerText.includes("precio")) {
                         response = aiResponses["premium"];
-                    } else if (lowerText.includes("desarrollador") || lowerText.includes("daniel") || lowerText.includes("bruiser") || lowerText.includes("hizo")) {
+                    } else if (lowerText.includes("desarrollador") || lowerText.includes("quien") || lowerText.includes("bruiser")) {
                         response = aiResponses["desarrollador"];
-                    } else if (lowerText.includes("retención") || lowerText.includes("retencion") || lowerText.includes("seo") || lowerText.includes("estrategia")) {
+                    } else if (lowerText.includes("daniel")) {
+                        response = aiResponses["daniel"];
+                    } else if (lowerText.includes("retención") || lowerText.includes("seo") || lowerText.includes("estrategia")) {
                         response = aiResponses["seo"];
+                    } else if (lowerText.includes("webapp") || lowerText.includes("app") || lowerText.includes("tecnología")) {
+                        response = aiResponses["webapp"];
+                    } else if (lowerText.includes("tiempo") || lowerText.includes("demora") || lowerText.includes("cuando")) {
+                        response = aiResponses["tiempo"];
+                    } else if (lowerText.includes("hola") || lowerText.includes("buenas") || lowerText.includes("saludos")) {
+                        response = aiResponses["hola"];
                     }
                     
+                    // Parse markdown-style bold
+                    response = response.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>');
                     
-                    // Simple Markdown bold
-                    response = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                     addMessage(response, true);
 
-                }, 800 + Math.random() * 800);
+                }, thinkTime);
             };
 
+            // Bind events
             window.handleKeyPress = (e) => {
                 if (e.key === 'Enter') {
                     window.sendUserMessage(e.target.value);
@@ -792,8 +848,7 @@
             };
 
             window.handleSendClick = () => {
-                const input = document.getElementById('chat-input');
-                window.sendUserMessage(input.value);
+                window.sendUserMessage(chatInput.value);
             };
 
             const simulateInitialMessage = () => {
@@ -801,8 +856,8 @@
                 
                 setTimeout(() => {
                     removeThinkingIndicator(thinkingId);
-                    addMessage("¡Hola! Soy Gemini, integrado para **Hydrocar**. He analizado el clima de Cali hoy y es perfecto para un tratamiento de cera cerámica. ¿Te explico cómo funciona el sistema de suscripciones?");
-                }, 1000);
+                    addMessage("¡Hola! Soy Gemini, integrado como asistente para **Hydrocar**. Conozco a fondo el mercado automotriz en Cali. <br><br>¿Te explico cómo funciona la <strong>WebApp</strong> o el modelo de <strong>suscripciones</strong>?");
+                }, 1200);
             };
 
             fab.addEventListener('click', toggleChat);
