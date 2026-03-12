@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Comercial Premium - Hydrocar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0a0a0a',
+                            darker: '#050505',
+                            accent: '#2563eb', // blue-600
+                            cyan: '#2dd4bf', // teal-400 / cyan-400
+                            gemini1: '#4285f4',
+                            gemini2: '#9b72cb',
+                            gemini3: '#d96570',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: .5 },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gemini-gradient {
+            background: conic-gradient(from 180deg at 50% 50%, #4285f4 0deg, #9b72cb 180deg, #d96570 360deg);
+        }
+        
+        .gemini-border {
+            position: relative;
+        }
+        
+        .gemini-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(45deg, #4285f4, #9b72cb, #d96570);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Hero Image Overlay */
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 1) 100%);
+        }
+
+        
+        /* Hide scrollbar for quick replies */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(66, 133, 244, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(66, 133, 244, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden relative">
+
+    <!-- WebView Warning Overlay -->
+    <div id="webview-warning" class="fixed inset-0 z-[100] bg-brand-dark/95 backdrop-blur-xl flex-col items-center justify-center p-6 text-center hidden">
+        <div class="glass-card p-8 rounded-3xl max-w-md w-full border border-brand-cyan/30 shadow-[0_0_50px_rgba(45,212,191,0.2)] animate-fade-in-up">
+            <div class="w-16 h-16 mx-auto bg-brand-cyan/10 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="compass" class="w-8 h-8 text-brand-cyan"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Para una mejor experiencia</h2>
+            <p class="text-slate-300 mb-6 text-sm" id="webview-instruction">
+                Estás viendo esta propuesta desde el navegador integrado. Para ver todas las animaciones y funcionalidades correctamente, por favor abre este enlace en tu navegador principal.
+            </p>
+            
+            <!-- iOS Instructions for Local Files -->
+            <div id="ios-instruction-box" class="hidden w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-left space-y-4 animate-fade-in-up">
+                <p class="font-bold text-white text-base text-center mb-2">Pasos para ver en iPhone:</p>
+                
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">1</div>
+                    <p class="text-sm text-slate-300">Toca el botón de <strong>Compartir</strong> <i data-lucide="share" class="inline w-4 h-4 text-brand-cyan mx-1"></i> (arriba a la derecha o abajo).</p>
+                </div>
+                
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">2</div>
+                    <p class="text-sm text-slate-300">Desliza hacia abajo y selecciona <br><strong>"Guardar en Archivos"</strong> <i data-lucide="folder" class="inline w-4 h-4 text-brand-cyan mx-1"></i>.</p>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">3</div>
+                    <p class="text-sm text-slate-300">Ve a la app <strong>Archivos</strong> <i data-lucide="folder-open" class="inline w-4 h-4 text-brand-cyan mx-1"></i> y toca el documento para verlo con todas sus funciones.</p>
+                </div>
+            </div>
+
+            <!-- Android Instructions for Local Files -->
+            <div id="android-instruction-box" class="hidden w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-left space-y-4 animate-fade-in-up">
+                <p class="font-bold text-white text-base text-center mb-2">Pasos para ver en Android:</p>
+                
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">1</div>
+                    <p class="text-sm text-slate-300">Toca el botón de menú <i data-lucide="more-vertical" class="inline w-4 h-4 text-brand-cyan mx-1"></i> en la esquina superior derecha.</p>
+                </div>
+                
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">2</div>
+                    <p class="text-sm text-slate-300">Selecciona <strong>"Abrir con Chrome"</strong> <i data-lucide="chrome" class="inline w-4 h-4 text-brand-cyan mx-1"></i> o "Abrir en el navegador".</p>
+                </div>
+            </div>
+
+            <!-- Web Link Fallback Buttons -->
+            <div id="web-buttons" class="hidden space-y-4 w-full mt-4">
+                <button id="btn-open-safari" class="hidden w-full py-4 rounded-xl bg-white text-black font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors shadow-lg">
+                    <i data-lucide="compass" class="w-5 h-5 text-blue-500"></i>
+                    Abrir en Safari
+                </button>
+                
+                <button id="btn-open-chrome" class="hidden w-full py-4 rounded-xl bg-[#4285f4] text-white font-bold flex items-center justify-center gap-2 hover:bg-blue-600 transition-colors shadow-lg">
+                    <i data-lucide="chrome" class="w-5 h-5"></i>
+                    Abrir en Chrome
+                </button>
+                
+                <button id="btn-copy-link" onclick="copyProposalLink()" class="w-full py-3 rounded-xl border border-white/20 bg-white/5 text-white font-medium flex items-center justify-center gap-2 hover:bg-white/10 transition-colors">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    Copiar Enlace
+                </button>
+                
+                <p id="copy-success" class="text-green-400 text-xs hidden animate-fade-in-up mt-2">¡Enlace copiado! Pégalo en tu navegador.</p>
+            </div>
+
+            <button onclick="document.getElementById('webview-warning').style.display='none'" class="mt-8 text-slate-500 text-xs underline hover:text-white transition-colors">Continuar de todos modos (no recomendado)</button>
+        </div>
+    </div>
+
+
+    <!-- Navigation (Simple) -->
+    <nav class="fixed w-full z-50 glass-card border-b-0 border-white/5 py-4">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-6 h-6 text-brand-cyan"></i>
+                <span class="text-xl font-bold tracking-wider">HYDROCAR</span>
+            </div>
+            <a href="https://wa.me/573053862774?text=Hola%20Daniel,%20quiero%20iniciar%20con%20la%20propuesta%20de%20Hydrocar" target="_blank" class="hidden md:flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span class="text-sm font-medium">Hablemos</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=2070&auto=format&fit=crop" alt="Detallado de autos de lujo" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 border-brand-cyan/30">
+                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                <span class="text-sm font-medium text-brand-cyan">Propuesta Estratégica Digital</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 leading-tight">
+                HYDRO<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">CAR</span>
+            </h1>
+            
+            <p class="text-xl md:text-3xl font-light text-slate-300 mb-10 max-w-3xl mx-auto">
+                "La evolución del brillo en la Sucursal del Cielo."
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#estrategia" class="px-8 py-4 rounded-full bg-brand-accent hover:bg-blue-500 text-white font-semibold transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2">
+                    Ver Propuesta
+                    <i data-lucide="arrow-down" class="w-5 h-5"></i>
+                </a>
+                <a href="#planes" class="px-8 py-4 rounded-full glass-card hover:bg-white/10 text-white font-semibold transition-all flex items-center gap-2">
+                    Planes de Inversión
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Analysis Section -->
+    <section id="estrategia" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="space-y-8 animate-slide-in-right">
+                    <div class="space-y-4">
+                        <h2 class="text-sm font-bold tracking-widest text-brand-cyan uppercase">Análisis Estratégico</h2>
+                        <h3 class="text-3xl md:text-4xl font-bold leading-tight">
+                            Dominando el mercado automotriz en <span class="text-gradient">Cali</span>.
+                        </h3>
+                    </div>
+
+                    <div class="prose prose-invert prose-lg text-slate-400">
+                        <p>
+                            El mercado de la estética automotriz en Cali está fragmentado. La mayoría compite por precio, no por <strong>experiencia ni valor percibido</strong>. Hydrocar no es un lavadero más; es un centro de estética premium. Para transmitir esto, necesitamos un ecosistema digital que respire lujo, tecnología y confianza desde el primer clic.
+                        </p>
+                        <p>
+                            Nuestra estrategia no se basa solo en atraer clientes una vez, sino en <strong>crear recurrencia</strong>. Mediante un sistema digital robusto, posicionaremos a Hydrocar como la única opción lógica para el dueño de un vehículo de alta gama o para quien valora verdaderamente su inversión.
+                        </p>
+                        <ul class="space-y-4 mt-6 list-none pl-0">
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="target" class="w-6 h-6 text-brand-cyan shrink-0 mt-1"></i>
+                                <span><strong>Posicionamiento Premium:</strong> Diseño High-Tech que eleva la percepción de marca inmediatamente.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="repeat" class="w-6 h-6 text-brand-cyan shrink-0 mt-1"></i>
+                                <span><strong>Recurrencia Automatizada:</strong> Sistemas diseñados para convertir visitas únicas en clientes frecuentes (Planes de suscripción).</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-brand-cyan shrink-0 mt-1"></i>
+                                <span><strong>Fricción Cero:</strong> Experiencia de usuario (UX) impecable orientada a la agendamiento rápido y directo vía WhatsApp o pasarela.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="relative group rounded-2xl overflow-hidden glass-card border-white/10 p-2">
+                    <img src="https://images.unsplash.com/photo-1552930294-6b595f4c2974?q=80&w=2000&auto=format&fit=crop" alt="Espuma activa sobre carrocería negra" class="w-full h-auto rounded-xl object-cover aspect-[4/3] transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent opacity-60"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+    
+    <!-- Cronograma & Suscripción (Visual System) -->
+    <section id="suscripciones" class="py-24 relative bg-brand-dark overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-brand-gemini1/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 space-y-16">
+            
+            <div class="text-center space-y-4">
+                <h2 class="text-sm font-bold tracking-widest text-brand-gemini1 uppercase flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Innovación Clave
+                </h2>
+                <h3 class="text-3xl md:text-5xl font-bold">Arquitectura de Fidelización</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto">Transformando lavados ocasionales en suscripciones automáticas. Un ecosistema predictivo y recurrente.</p>
+            </div>
+
+            <!-- Horizontal Timeline (Adapted to Dark Theme) -->
+            <div class="glass-card p-8 rounded-3xl border-white/5 overflow-x-auto custom-scrollbar relative">
+                <h3 class="text-xs font-bold uppercase text-slate-500 mb-8 tracking-widest">Cronograma de Implementación</h3>
+                <div class="flex justify-between min-w-[800px] relative pb-4">
+                    <!-- Base Line -->
+                    <div class="absolute top-4 left-0 w-full h-[2px] bg-white/10 -z-10"></div>
+                    
+                    <div class="flex flex-col items-center text-center w-32 relative group">
+                        <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 border border-green-500/50 flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(34,197,94,0.2)]"><i data-lucide="check" class="w-4 h-4"></i></div>
+                        <p class="text-[10px] font-bold uppercase text-green-500">Completado</p>
+                        <p class="text-xs font-medium text-slate-300 mt-1">Diagnóstico Inicial</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-32 relative group">
+                        <div class="absolute top-4 left-1/2 w-full h-[2px] bg-gradient-to-r from-green-500/50 to-brand-gemini1 -z-10"></div>
+                        <div class="w-8 h-8 rounded-full border-2 border-brand-gemini1 bg-brand-dark text-brand-gemini1 flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(66,133,244,0.5)] animate-pulse"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                        <p class="text-[10px] font-bold uppercase text-brand-gemini1">Actual</p>
+                        <p class="text-xs font-bold text-white mt-1">Propuesta Tecnológica</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-32 relative">
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-brand-dark text-slate-500 flex items-center justify-center mb-2">3</div>
+                        <p class="text-[10px] font-bold uppercase text-slate-600 italic">Pendiente</p>
+                        <p class="text-xs font-medium text-slate-400 mt-1">UX/UI Design</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-32 relative">
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-brand-dark text-slate-500 flex items-center justify-center mb-2">4</div>
+                        <p class="text-[10px] font-bold uppercase text-slate-600 italic">Pendiente</p>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Integración Pasarela</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-32 relative">
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-brand-dark text-slate-500 flex items-center justify-center mb-2">5</div>
+                        <p class="text-[10px] font-bold uppercase text-slate-600 italic">Pendiente</p>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Suscripciones Auto</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-32 relative">
+                        <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-brand-dark text-slate-500 flex items-center justify-center mb-2"><i data-lucide="rocket" class="w-4 h-4"></i></div>
+                        <p class="text-[10px] font-bold uppercase text-slate-600 italic">Final</p>
+                        <p class="text-xs font-bold text-slate-400 mt-1 uppercase">Despliegue</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Visualization -->
+            <div class="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                
+                <!-- Info text -->
+                <div class="space-y-6 animate-slide-in-right">
+                    <h4 class="text-2xl md:text-3xl font-bold">Visualización del Ecosistema</h4>
+                    <p class="text-slate-400 leading-relaxed">
+                        El cuello de botella en los centros de detallado suele ser la retención. Para escalar Hydrocar, el sistema integra una <strong>interfaz de fidelización directa</strong>.
+                    </p>
+                    <p class="text-slate-400 leading-relaxed">
+                        El cliente afilia su tarjeta una sola vez de forma tokenizada y 100% segura. El sistema realiza el cobro automático mensual y le notifica su saldo de lavados disponibles, eliminando la fricción en el punto de venta y asegurando el flujo de caja.
+                    </p>
+                    <div class="flex items-center gap-4 pt-4">
+                        <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                            <span class="text-xs font-medium">Pasarela Segura (PCI-DSS)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Card -->
+                <div class="glass-card p-6 md:p-8 rounded-[2rem] border-white/10 relative overflow-hidden group shadow-2xl">
+                    <!-- Glow effect -->
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-gemini1/20 rounded-full blur-[50px] group-hover:bg-brand-gemini1/30 transition-colors duration-500"></div>
+                    
+                    <h4 class="text-[10px] font-bold uppercase text-slate-500 tracking-widest mb-6 relative z-10">Vista Cliente: Estado de suscripción</h4>
+                    
+                    <div class="flex justify-between items-end mb-8 relative z-10">
+                        <div>
+                            <p class="text-3xl md:text-4xl font-black text-white">$75.990 <span class="text-xs md:text-sm font-light text-slate-400">/ mes</span></p>
+                            <p class="text-sm text-brand-cyan font-medium mt-1">Plan Premium Activo</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-4xl md:text-5xl font-black text-white">1</p>
+                            <p class="text-[10px] uppercase text-slate-400 font-bold leading-none mt-1">Lavado Restante</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-white/5 h-2 rounded-full mb-8 relative z-10 overflow-hidden">
+                        <div class="bg-gradient-to-r from-brand-cyan to-brand-gemini1 h-full rounded-full w-1/4 shadow-[0_0_10px_rgba(45,212,191,0.5)]"></div>
+                    </div>
+
+                    <!-- Payment Method Card -->
+                    <div class="p-4 bg-black/40 rounded-2xl border border-white/5 mb-6 relative z-10 backdrop-blur-sm">
+                        <div class="flex items-center justify-between text-xs mb-3 text-slate-400">
+                            <span>Próximo cobro automático:</span>
+                            <span class="font-medium text-slate-300">28 Mar, 2024</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <!-- Clean Visa SVG -->
+                                <div class="bg-white px-2 py-1 rounded w-12 h-8 flex items-center justify-center overflow-hidden">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Visa_Inc._logo_%282021–present%29.svg/1280px-Visa_Inc._logo_%282021–present%29.svg.png?_=20240313022811" alt="Visa" class="w-full h-auto object-contain">
+                                </div>
+                                <span class="text-xs text-slate-300 font-mono tracking-widest">•••• 5675</span>
+                            </div>
+                            <span class="text-[10px] text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/20">Activa</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full py-3.5 bg-gradient-to-r from-brand-gemini1 to-blue-500 rounded-xl text-sm font-bold text-white hover:from-blue-500 hover:to-blue-400 transition-all shadow-[0_0_20px_rgba(66,133,244,0.3)] relative z-10 flex items-center justify-center gap-2">
+                        Agendar lavado ahora
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Plans Section -->
+    <section id="planes" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-sm font-bold tracking-widest text-brand-cyan uppercase">Inversión Estratégica</h2>
+                <h3 class="text-3xl md:text-5xl font-bold">Planes de Desarrollo</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto">Selecciona la arquitectura digital que mejor se adapte a la visión de expansión de Hydrocar.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                
+                <!-- Plan Básico -->
+                <div class="glass-card p-8 rounded-3xl border-white/5 flex flex-col hover:-translate-y-2 transition-transform duration-300">
+                    <h4 class="text-xl font-bold text-white mb-2">Presencia Digital</h4>
+                    <p class="text-slate-400 text-sm mb-6 h-10">Para establecer una imagen premium y captar prospectos.</p>
+                    <div class="mb-8">
+                        <span class="text-4xl font-black text-white">$300.000</span>
+                        <span class="text-sm text-slate-500">COP</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-300">
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Landing Page (One Page)</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Diseño UI Básico</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Integración Botón WhatsApp</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Optimización Móvil (Responsive)</li>
+                    </ul>
+                    <a href="https://wa.me/573053862774?text=Hola,%20elegí%20el%20plan%20Presencia%20Digital%20de%20$300.000.%20Iniciamos%20el%20desarrollo." target="_blank" class="w-full py-3 rounded-xl border border-white/10 hover:bg-white/5 transition-colors font-medium text-center inline-block">Seleccionar Plan</a>
+                </div>
+
+                <!-- Plan Profesional -->
+                <div class="glass-card p-8 rounded-3xl border-brand-cyan/30 relative flex flex-col transform md:-translate-y-4 shadow-[0_0_30px_rgba(45,212,191,0.15)]">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-cyan text-brand-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recomendado</div>
+                    <h4 class="text-xl font-bold text-white mb-2">Ecosistema Fidelidad</h4>
+                    <p class="text-slate-400 text-sm mb-6 h-10">El balance perfecto para automatizar y fidelizar.</p>
+                    <div class="mb-8">
+                        <span class="text-4xl font-black text-white">$950.000</span>
+                        <span class="text-sm text-slate-500">COP</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-300">
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Diseño UI/UX Premium (Multi-página)</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Formulario de Citas Inteligente</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Catálogo de Servicios Detallado</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> Optimización SEO Local</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-cyan shrink-0"></i> 1 Mes de Soporte Técnico</li>
+                    </ul>
+                    <a href="https://wa.me/573053862774?text=Hola,%20elegí%20el%20plan%20Ecosistema%20Fidelidad%20de%20$950.000.%20Iniciamos%20el%20desarrollo." target="_blank" class="w-full py-3 rounded-xl bg-brand-cyan text-brand-dark hover:bg-teal-300 transition-colors font-bold text-center inline-block">Seleccionar Plan</a>
+                </div>
+
+                <!-- Plan Premium -->
+                <div class="glass-card p-8 rounded-3xl border-brand-gemini1/30 relative flex flex-col hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
+                    <div class="absolute inset-0 bg-brand-gemini1/5 -z-10 pointer-events-none"></div>
+                    <h4 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-brand-gemini1"></i> Ecosistema Premium</h4>
+                    <p class="text-slate-400 text-sm mb-6 h-10">La solución definitiva para escalar y dominar el mercado.</p>
+                    <div class="mb-8">
+                        <span class="text-4xl font-black text-white">$1.800.000</span>
+                        <span class="text-sm text-slate-500">COP</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow text-sm text-slate-300">
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-gemini1 shrink-0"></i> <strong>Desarrollo de WebApp</strong></li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-gemini1 shrink-0"></i> Módulo de Suscripciones (Pagos Recurrentes)</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-gemini1 shrink-0"></i> Integración Pasarela de Pagos Segura</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-gemini1 shrink-0"></i> Base de Datos de Clientes & CRM Básico</li>
+                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-brand-gemini1 shrink-0"></i> Asesoría Estratégica Digital (2 sesiones)</li>
+                    </ul>
+                    <a href="https://wa.me/573053862774?text=Hola,%20elegí%20el%20plan%20Ecosistema%20Premium%20de%20$1.800.000.%20Iniciamos%20el%20desarrollo." target="_blank" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-gemini1 to-blue-500 text-white hover:from-blue-500 hover:to-blue-400 transition-all font-bold shadow-[0_0_15px_rgba(66,133,244,0.3)] text-center inline-block">Escalar Negocio</a>
+                </div>
+
+            </div>
+
+            <div class="mt-16 max-w-3xl mx-auto glass-card p-6 rounded-2xl border-white/5 text-center flex flex-col items-center justify-center animate-fade-in-up">
+                <i data-lucide="info" class="w-6 h-6 text-brand-cyan mb-3 opacity-80"></i>
+                <p class="text-slate-300 text-sm md:text-base font-medium">Condiciones de Desarrollo</p>
+                <p class="text-slate-400 text-xs mt-2">
+                    El proyecto se inicia con un anticipo del <strong>50%</strong>. El tiempo estimado de desarrollo es de <strong>2 semanas</strong>, seguido de <strong>1 semana</strong> dedicada a revisión y ajustes finales junto al cliente.
+                </p>
+            </div>        </div>
+    </section>
+
+    <!-- Visual Divider -->
+    <div class="h-64 relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2166&auto=format&fit=crop" alt="Interiores impecables" class="w-full h-full object-cover opacity-30 fixed-bg hidden md:block" style="background-attachment: fixed;">
+        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2166&auto=format&fit=crop" alt="Interiores impecables" class="w-full h-full object-cover opacity-30 md:hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-darker via-transparent to-brand-dark"></div>
+    </div>
+
+    <!-- Signature Section -->
+    <footer class="py-16 border-t border-white/5 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-2xl glass-card flex items-center justify-center border-brand-cyan/20">
+                <i data-lucide="cpu" class="w-8 h-8 text-brand-cyan"></i>
+            </div>
+            <h4 class="text-2xl font-bold mb-2">Diseñado para liderar.</h4>
+            <p class="text-slate-400 mb-8 max-w-lg mx-auto">Esta propuesta ha sido elaborada a medida para las necesidades exclusivas de Hydrocar, fusionando estética automotriz con tecnología de vanguardia.</p>
+            
+            <div class="inline-flex flex-col items-center">
+                <p class="text-sm text-slate-500 uppercase tracking-widest mb-1">Desarrollado por</p>
+                <p class="text-lg font-bold text-white mb-1">Daniel Contreras Herrera</p>
+                <p class="text-brand-cyan text-sm mb-1">CEO - Bruiser Tech</p>
+                <p class="text-slate-400 text-xs mb-4">+8 Años de Experiencia en Desarrollo</p>
+                
+                <div class="flex gap-4 items-center justify-center">
+                    <a href="https://instagram.com/bruiser.tech" target="_blank" class="p-2 rounded-full glass-card hover:bg-white/10 transition-colors text-slate-300 hover:text-white">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://wa.me/573053862774" target="_blank" class="p-2 rounded-full glass-card hover:bg-white/10 transition-colors text-slate-300 hover:text-white">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://bruiser.tech" target="_blank" class="p-2 rounded-full glass-card hover:bg-white/10 transition-colors text-slate-300 hover:text-white">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MAGIC MIRROR (GEMINI STYLE AI CHAT) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        
+        <!-- Chat Window (Hidden by default) -->
+        <div id="ai-chat-window" class="hidden w-[350px] sm:w-[400px] mb-4 glass-card gemini-border rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 flex flex-col h-[500px]">
+            <!-- Header -->
+            <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5 shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full gemini-gradient flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-3 h-3 text-white"></i>
+                    </div>
+                    <span class="font-medium text-sm text-slate-200">Gemini para Hydrocar</span>
+                </div>
+                <button id="close-chat" class="text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <!-- Chat Body -->
+            <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-4 text-sm scroll-smooth" id="chat-messages">
+                <!-- Messages will be injected here via JS -->
+            </div>
+            
+            <!-- Input Area -->
+            <div class="p-3 border-t border-white/10 bg-black/40 shrink-0">
+                <!-- Quick Replies -->
+                <div class="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide" id="quick-replies">
+                    <button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-brand-gemini1/30 bg-brand-gemini1/10 hover:bg-brand-gemini1/20 text-xs text-brand-gemini1 transition-colors" onclick="sendUserMessage('¿Cuál es la lógica técnica de las suscripciones?')">ROI Suscripciones</button>
+                    <button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition-colors" onclick="sendUserMessage('¿Cómo funciona la estrategia de retención?')">Retención</button>
+                    <button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition-colors" onclick="sendUserMessage('¿Quién es el desarrollador?')">Desarrollador</button>
+                </div>
+
+                <div class="relative flex items-center bg-white/5 border border-white/10 rounded-2xl focus-within:border-brand-gemini1/50 focus-within:ring-1 focus-within:ring-brand-gemini1/50 transition-all">
+                    <input type="text" id="chat-input" placeholder="Pregunta a Gemini..." class="w-full bg-transparent py-3 pl-4 pr-10 text-slate-300 text-sm focus:outline-none placeholder-slate-500" onkeypress="handleKeyPress(event)">
+                    <button id="send-btn" onclick="handleSendClick()" class="absolute right-2 p-1.5 rounded-full text-brand-gemini1 hover:bg-white/10 transition-colors">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="text-[10px] text-center text-slate-500 mt-2 flex items-center justify-center gap-1">
+                    <i data-lucide="sparkles" class="w-3 h-3 text-brand-gemini1"></i>
+                    Desarrollado con IA por Bruiser Tech
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button id="ai-fab" class="w-14 h-14 rounded-full gemini-gradient shadow-[0_0_20px_rgba(155,114,203,0.4)] flex items-center justify-center hover:scale-105 transition-transform relative group">
+            <div class="absolute inset-0 rounded-full gemini-gradient animate-pulse-glow blur-sm -z-10"></div>
+            <i data-lucide="sparkles" class="w-6 h-6 text-white drop-shadow-md"></i>
+            
+            <!-- Tooltip -->
+            <div class="absolute right-16 px-3 py-1.5 glass-card rounded-lg text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+                Hablar con IA
+            </div>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Magic Mirror AI Chat Logic
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const isLocalFile = window.location.protocol === 'file:';
+            const isWhatsAppOrSimilar = isWebView();
+            const os = detectOS();
+
+            // We show the warning if they are in a WebView OR if they opened a local file on a mobile device and it's rendering poorly.
+            // Since it's hard to detect "poor rendering", we will assume if it's iOS and a local file inside a messenger, they need help.
+            if (isWhatsAppOrSimilar || (isLocalFile && (os === 'iOS' || os === 'Android'))) {
+                const warningEl = document.getElementById('webview-warning');
+                const currentUrl = window.location.href;
+                
+                if (warningEl) {
+                    warningEl.style.display = 'flex';
+                    
+                    // If it's a local file (e.g. sent directly over WhatsApp as a document)
+                    if (isLocalFile) {
+                        document.getElementById('webview-instruction').textContent = "Has abierto un archivo local dentro de la app. Para que funcionen los botones y animaciones, guárdalo en tu teléfono.";
+                        if (os === 'iOS') {
+                            document.getElementById('ios-instruction-box').classList.remove('hidden');
+                        } else {
+                            document.getElementById('android-instruction-box').classList.remove('hidden');
+                        }
+                    } else {
+                        // It's a web URL viewed inside an in-app browser
+                        const webBtns = document.getElementById('web-buttons');
+                        webBtns.classList.remove('hidden');
+                        
+                        if (os === 'iOS') {
+                            const safariBtn = document.getElementById('btn-open-safari');
+                            safariBtn.classList.remove('hidden');
+                            safariBtn.addEventListener('click', () => {
+                                window.location.href = `x-web-search://?${currentUrl}`;
+                                setTimeout(() => { window.location.href = currentUrl; }, 1000);
+                            });
+                        } else if (os === 'Android') {
+                            const chromeBtn = document.getElementById('btn-open-chrome');
+                            chromeBtn.classList.remove('hidden');
+                            chromeBtn.addEventListener('click', () => {
+                                const httpsLessUrl = currentUrl.replace(/^https?:\/\//i, '');
+                                window.location.href = `intent://${httpsLessUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+                            });
+                        }
+                    }
+                }
+            }
+
+
+            const fab = document.getElementById('ai-fab');
+            const chatWindow = document.getElementById('ai-chat-window');
+            const closeBtn = document.getElementById('close-chat');
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            let isChatOpen = false;
+            let hasOpenedOnce = false;
+
+            const toggleChat = () => {
+                isChatOpen = !isChatOpen;
+                
+                if (isChatOpen) {
+                    chatWindow.classList.remove('hidden');
+                    // Small delay to allow display:block to apply before animating opacity/transform
+                    setTimeout(() => {
+                        chatWindow.classList.remove('translate-y-4', 'opacity-0');
+                    }, 10);
+                    
+                    if (!hasOpenedOnce) {
+                        simulateInitialMessage();
+                        hasOpenedOnce = true;
+                    }
+                } else {
+                    chatWindow.classList.add('translate-y-4', 'opacity-0');
+                    setTimeout(() => {
+                        chatWindow.classList.add('hidden');
+                    }, 300); // Wait for transition to finish
+                }
+            };
+
+            const addMessage = (text, isAI = true) => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `max-w-[85%] rounded-2xl p-3 ${isAI ? 'bg-white/10 text-slate-200 self-start rounded-tl-sm' : 'bg-brand-accent/80 text-white self-end rounded-tr-sm'}`;
+                
+                if(isAI) {
+                    msgDiv.innerHTML = `
+                        <div class="flex gap-2 items-start">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-brand-cyan shrink-0 mt-0.5"></i>
+                            <span>${text}</span>
+                        </div>
+                    `;
+                } else {
+                    msgDiv.textContent = text;
+                }
+                
+                messagesContainer.appendChild(msgDiv);
+                lucide.createIcons({ root: msgDiv });
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            };
+
+            const addThinkingIndicator = () => {
+                const id = 'thinking-' + Date.now();
+                const div = document.createElement('div');
+                div.id = id;
+                div.className = 'bg-white/5 self-start rounded-2xl rounded-tl-sm p-3 flex gap-1 items-center w-16';
+                div.innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 0ms"></div>
+                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 150ms"></div>
+                    <div class="w-2 h-2 rounded-full bg-brand-cyan/60 animate-bounce" style="animation-delay: 300ms"></div>
+                `;
+                messagesContainer.appendChild(div);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                return id;
+            };
+
+            const removeThinkingIndicator = (id) => {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            };
+
+            const aiResponses = {
+                "suscripciones": "El backend de suscripciones operará bajo un modelo de fijación de ingresos recurrentes. Técnicamente, esto reduce el CAC (Costo de Adquisición) en un 40%, ya que el sistema retiene al cliente mediante el débito automático. La base de datos registrará cada lavado permitiendo predicciones de stock de insumos con alta precisión.",
+                "premium": "El Plan Ecosistema Premium ($1.800.000 COP) es la joya de la corona. Incluye diseño UX/UI High-Tech, sistema automatizado de suscripciones, integración de pasarela segura, módulo avanzado de citas y asesoría estratégica de Bruiser Tech. ¿Te gustaría agendar una llamada con Daniel para revisarlo?",
+                "desarrollador": "Esta propuesta fue creada por Daniel Contreras Herrera, CEO de Bruiser Tech, especializado en arquitecturas digitales de alto nivel. Puedes contactarlo en WhatsApp al +57 305 386 2774 o en Instagram @bruiser.tech.",
+                "seo": "El sistema integrará un ecosistema de retención inteligente. Al vincular el perfil del cliente, podemos disparar notificaciones push o SMS automatizados cuando detectemos que han pasado más de 15 días desde su último detallado, optimizando el flujo de entrada al lavadero.",
+                "default": "He analizado la arquitectura de Hydrocar. Puedo responderte sobre el **sistema de suscripciones**, la **estrategia de retención (SEO/Notificaciones)**, los **planes de inversión** o sobre el **desarrollador de la propuesta**. ¿Qué componente deseas que analicemos?"
+            };
+
+            window.sendUserMessage = (text) => {
+                if (!text.trim()) return;
+                
+                // Add User message
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'max-w-[85%] rounded-2xl p-3 bg-white/10 text-slate-200 self-end rounded-tr-sm border border-white/5';
+                msgDiv.textContent = text;
+                messagesContainer.appendChild(msgDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                document.getElementById('chat-input').value = '';
+
+                // Simulate thinking
+                const thinkingId = addThinkingIndicator();
+                
+                setTimeout(() => {
+                    removeThinkingIndicator(thinkingId);
+                    
+                    let response = aiResponses["default"];
+                    const lowerText = text.toLowerCase();
+                    
+                    if (lowerText.includes("suscrip") || lowerText.includes("pagos") || lowerText.includes("roi")) {
+                        response = aiResponses["suscripciones"];
+                    } else if (lowerText.includes("premium") || lowerText.includes("plan")) {
+                        response = aiResponses["premium"];
+                    } else if (lowerText.includes("desarrollador") || lowerText.includes("daniel") || lowerText.includes("bruiser") || lowerText.includes("hizo")) {
+                        response = aiResponses["desarrollador"];
+                    } else if (lowerText.includes("retención") || lowerText.includes("retencion") || lowerText.includes("seo") || lowerText.includes("estrategia")) {
+                        response = aiResponses["seo"];
+                    }
+                    
+                    
+                    // Simple Markdown bold
+                    response = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    addMessage(response, true);
+
+                }, 800 + Math.random() * 800);
+            };
+
+            window.handleKeyPress = (e) => {
+                if (e.key === 'Enter') {
+                    window.sendUserMessage(e.target.value);
+                }
+            };
+
+            window.handleSendClick = () => {
+                const input = document.getElementById('chat-input');
+                window.sendUserMessage(input.value);
+            };
+
+            const simulateInitialMessage = () => {
+                const thinkingId = addThinkingIndicator();
+                
+                setTimeout(() => {
+                    removeThinkingIndicator(thinkingId);
+                    addMessage("¡Hola! Soy Gemini, integrado para **Hydrocar**. He analizado el clima de Cali hoy y es perfecto para un tratamiento de cera cerámica. ¿Te explico cómo funciona el sistema de suscripciones?");
+                }, 1000);
+            };
+
+            fab.addEventListener('click', toggleChat);
+            closeBtn.addEventListener('click', toggleChat);
+        });
+    </script>
+</body>
+</html>
